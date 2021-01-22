@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @Data
 public class ByCallRec {
 
-    private String id;
+    private Long id;
 
     private Long callTime;
 

@@ -250,7 +250,7 @@ public class ExcelUtil {
                     SimpleDateFormat sdf = new SimpleDateFormat(DateUtil.DATE_TIME);
                     cellValue = sdf.format(HSSFDateUtil.getJavaDate(cell.getNumericCellValue())).toString();
                 } else {
-                    DecimalFormat df = new DecimalFormat("0.00");
+                    DecimalFormat df = new DecimalFormat("0");
                     cellValue = df.format(cell.getNumericCellValue());
                 }
                 break;

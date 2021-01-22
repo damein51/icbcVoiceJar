@@ -15,8 +15,10 @@ import java.util.stream.Collectors;
 public class Test3 {
 
 
-    private static final String WAV_FILE_EXT1 = "http://10.30.1.71:9999/media/";
-    private static final String WAV_FILE_EXT2 = "http://10.30.1.153:8068/cincc-serv/media/download?";
+    //    private static final String WAV_FILE_EXT1 = "http://10.30.1.71:9999/media/";
+    private static final String WAV_FILE_EXT1 = "http://192.168.14.174:8080";
+    //    private static final String WAV_FILE_EXT2 = "http://10.30.1.153:8068/cincc-serv/media/download?";
+    private static final String WAV_FILE_EXT2 = "http://192.168.14.141:8068/cincc-serv/media/download?";
 
 
     private static final String START_WITH = "666666/servicerecord/";
@@ -55,24 +57,23 @@ public class Test3 {
 
     public static void main(String[] args) throws IOException {
 
-        String inputCallRecFilePath = "/data/gz/call/";
-        String inputBillRecFilePath = "/data/gz/rec/";
-        String outFilePath = "/data/gz/";
+//        String inputCallRecFilePath = "/data/by/call/";
+//        String outFilePath = "/data/by/";
 
 //        String inputBillRecFilePath = "D://data/gz/bill/";
-//        String inputCallRecFilePath = "D://data/gz/rec/";
-//        String outFilePath = "D://data/gz/";
+        String inputCallRecFilePath = "D://data/by/call/";
+        String outFilePath = "D://data/by/";
 
-        String outWavPath = "/data22/line1000record/";
+        String outWavPath = "/data22/line1000record_by/";
 
         List<List<String>> callRecList = queryFileList(inputCallRecFilePath);
 
 
         List<ByCallRec> callRecs = callRecList.stream().map(n -> ByCallRec.builder()
-                .id(n.get(0))
+                .id(GV.l(n.get(0)))
                 .callTime(GV.l(n.get(1)))
-                .callTimeStr(handleTimeStr(GV.l(n.get(2))))
-                .url(n.get(3))
+                .callTimeStr(handleTimeStr(GV.l(n.get(1))))
+                .url(n.get(2))
                 .build()).collect(Collectors.toList());
         Map<String, List<ByCallRec>> callDateMap = callRecs.stream().collect(Collectors.groupingBy(ByCallRec::getCallTimeStr));
 
@@ -124,10 +125,13 @@ public class Test3 {
                 String originUrl = rec.getUrl();
                 originUrl = originUrl.replace(WAV_FILE_EXT1, "");
                 if (originUrl.startsWith(WAV_FILE_EXT2)) {
-                    originUrl = originUrl.substring(72);
+                    originUrl = originUrl.substring(75);
                 }
 
-                String recFileName = rec.getId();
+                System.out.println(" getUrl =  " + rec.getUrl());
+                System.out.println(" originUrl =  " + originUrl);
+                System.out.println("===========================================================================");
+                String recFileName = rec.getId() + "";
                 if (originUrl.endsWith(".wav")) {
                     recFileName = recFileName + ".wav";
                 } else {
