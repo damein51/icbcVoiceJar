@@ -55,7 +55,7 @@ public class HdfsClient {
     }
 
     @Test
-    public void testCopyToLocalFile() throws IOException, InterruptedException, URISyntaxException{
+    public void testCopyToLocalFile() throws IOException, InterruptedException, URISyntaxException {
         // 1 获取文件系统
         Configuration configuration = new Configuration();
         FileSystem fs = FileSystem.get(new URI("hdfs://hadoop102:9000"), configuration, "atguigu");
@@ -73,7 +73,7 @@ public class HdfsClient {
 
 
     @Test
-    public void testDelete() throws IOException, InterruptedException, URISyntaxException{
+    public void testDelete() throws IOException, InterruptedException, URISyntaxException {
         // 1 获取文件系统
         Configuration configuration = new Configuration();
         FileSystem fs = FileSystem.get(new URI("hdfs://hadoop102:9000"), configuration, "atguigu");
@@ -86,7 +86,7 @@ public class HdfsClient {
     }
 
     @Test
-    public void testRename() throws IOException, InterruptedException, URISyntaxException{
+    public void testRename() throws IOException, InterruptedException, URISyntaxException {
         // 1 获取文件系统
         Configuration configuration = new Configuration();
         FileSystem fs = FileSystem.get(new URI("hdfs://hadoop102:9000"), configuration, "atguigu");
@@ -99,7 +99,7 @@ public class HdfsClient {
     }
 
     @Test
-    public void testListFiles() throws IOException, InterruptedException, URISyntaxException{
+    public void testListFiles() throws IOException, InterruptedException, URISyntaxException {
         // 1获取文件系统
         Configuration configuration = new Configuration();
         FileSystem fs = FileSystem.get(new URI("hdfs://hadoop102:9000"), configuration, "atguigu");
@@ -107,7 +107,7 @@ public class HdfsClient {
         // 2 获取文件详情
         RemoteIterator<LocatedFileStatus> listFiles = fs.listFiles(new Path("/"), true);
 
-        while(listFiles.hasNext()){
+        while (listFiles.hasNext()) {
             LocatedFileStatus status = listFiles.next();
 
             // 输出详情
@@ -141,7 +141,7 @@ public class HdfsClient {
 
 
     @Test
-    public void testListStatus() throws IOException, InterruptedException, URISyntaxException{
+    public void testListStatus() throws IOException, InterruptedException, URISyntaxException {
 
         // 1 获取文件配置信息
         Configuration configuration = new Configuration();
@@ -154,16 +154,15 @@ public class HdfsClient {
 
             // 如果是文件
             if (fileStatus.isFile()) {
-                System.out.println("f:"+fileStatus.getPath().getName());
-            }else {
-                System.out.println("d:"+fileStatus.getPath().getName());
+                System.out.println("f:" + fileStatus.getPath().getName());
+            } else {
+                System.out.println("d:" + fileStatus.getPath().getName());
             }
         }
 
         // 3 关闭资源
         fs.close();
     }
-
 
 
     @Test
@@ -190,7 +189,7 @@ public class HdfsClient {
 
     // 文件下载
     @Test
-    public void getFileFromHDFS() throws IOException, InterruptedException, URISyntaxException{
+    public void getFileFromHDFS() throws IOException, InterruptedException, URISyntaxException {
         // 1 获取文件系统
         Configuration configuration = new Configuration();
         FileSystem fs = FileSystem.get(new URI("hdfs://hadoop102:9000"), configuration, "atguigu");
@@ -212,7 +211,7 @@ public class HdfsClient {
 
 
     @Test
-    public void readFileSeek1() throws IOException, InterruptedException, URISyntaxException{
+    public void readFileSeek1() throws IOException, InterruptedException, URISyntaxException {
         // 1 获取文件系统
         Configuration configuration = new Configuration();
         FileSystem fs = FileSystem.get(new URI("hdfs://hadoop102:9000"), configuration, "atguigu");
@@ -226,7 +225,7 @@ public class HdfsClient {
         // 4 流的拷贝
         byte[] buf = new byte[1024];
 
-        for(int i =0 ; i < 1024 * 128; i++){
+        for (int i = 0; i < 1024 * 128; i++) {
             fis.read(buf);
             fos.write(buf);
         }
@@ -238,7 +237,7 @@ public class HdfsClient {
 
 
     @Test
-    public void readFileSeek2() throws IOException, InterruptedException, URISyntaxException{
+    public void readFileSeek2() throws IOException, InterruptedException, URISyntaxException {
         // 1 获取文件系统
         Configuration configuration = new Configuration();
         FileSystem fs = FileSystem.get(new URI("hdfs://hadoop102:9000"), configuration, "atguigu");
@@ -247,7 +246,7 @@ public class HdfsClient {
         FSDataInputStream fis = fs.open(new Path("/hadoop-2.7.2.tar.gz"));
 
         // 3 定位输入数据位置
-        fis.seek(1024*1024*128);
+        fis.seek(1024 * 1024 * 128);
 
         // 4 创建输出流
         FileOutputStream fos = new FileOutputStream(new File("e:/hadoop-2.7.2.tar.gz.part2"));
