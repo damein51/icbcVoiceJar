@@ -40,9 +40,15 @@ public class FlowsumDriver {
         job.setOutputKeyClass(Text.class);
         job.setOutputValueClass(FlowBean.class);
 
+        // 8 指定自定义数据分区
+        job.setPartitionerClass(ProvincePartitioner.class);
+        // 9 同时指定相应数量的reduce task
+        job.setNumReduceTasks(5);
+
         // 5 指定job的输入原始文件所在目录
         FileInputFormat.setInputPaths(job, new Path(args[0]));
         FileOutputFormat.setOutputPath(job, new Path(args[1]));
+
 
         // 7 将job中配置的相关参数，以及job所用的java类所在的jar包， 提交给yarn去运行
         boolean result = job.waitForCompletion(true);

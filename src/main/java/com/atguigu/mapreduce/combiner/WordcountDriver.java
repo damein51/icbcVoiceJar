@@ -1,4 +1,4 @@
-package com.atguigu.mapreduce;
+package com.atguigu.mapreduce.combiner;
 
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.Path;
@@ -44,6 +44,9 @@ public class WordcountDriver {
         // 6 设置输入和输出路径
         FileInputFormat.setInputPaths(job, new Path(args[0]));
         FileOutputFormat.setOutputPath(job, new Path(args[1]));
+
+        // 指定需要使用combiner，以及用哪个类作为combiner的逻辑
+        job.setCombinerClass(WordcountCombiner.class);
 
         // 7 提交
         boolean result = job.waitForCompletion(true);

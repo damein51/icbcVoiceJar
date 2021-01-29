@@ -1,4 +1,4 @@
-package com.atguigu.mapreduce;
+package com.atguigu.mapreduce.combiner;
 
 import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.LongWritable;
