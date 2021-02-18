@@ -8,7 +8,6 @@ import org.apache.hadoop.io.compress.CompressionOutputStream;
 import org.apache.hadoop.util.ReflectionUtils;
 
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
@@ -54,7 +53,7 @@ public class TestCompress {
     }
 
     // 2、解压缩
-    private static void decompress(String fileName) throws FileNotFoundException, IOException {
+    private static void decompress(String fileName) throws IOException {
 
         // （0）校验是否能解压缩
         CompressionCodecFactory factory = new CompressionCodecFactory(new Configuration());
@@ -79,5 +78,4 @@ public class TestCompress {
         cis.close();
         fos.close();
     }
-}
 }
