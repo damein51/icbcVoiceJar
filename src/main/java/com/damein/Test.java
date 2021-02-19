@@ -57,37 +57,60 @@ public class Test {
 
         String inputCallRecFilePath = "/data/gz/call/";
         String inputBillRecFilePath = "/data/gz/rec/";
+        String inputBatchNoFilePath = "/data/gz/batchno/";
         String outFilePath = "/data/gz/";
 
 //        String inputBillRecFilePath = "D://data/gz/bill/";
 //        String inputCallRecFilePath = "D://data/gz/rec/";
 //        String outFilePath = "D://data/gz/";
 
-        String outWavPath = "/data22/line1000record/";
+        String outWavPath = "/data22/line1000record_gh/";
 
         List<List<String>> callRecList = queryFileList(inputCallRecFilePath);
         List<List<String>> billLst = queryFileList(inputBillRecFilePath);
+        List<List<String>> batchNoList = queryFileList(inputBatchNoFilePath);
+
+        List<CallRec> callRecs = new ArrayList<>();
+
+        Map<String, List<PairDef<String, String>>> batchNoMap = batchNoList.stream().map(n -> new PairDef<>(n.get(0), n.get(1))).collect(Collectors.groupingBy(PairDef::getFirst));
 
 
-        List<CaseInfo> billInfos = billLst.stream().map(n -> CaseInfo.builder()
-                .batchNo(n.get(0))
-                .cardNo(n.get(1))
-                .name(n.get(2))
-                .phone(n.get(3))
-                .billCode(n.get(4))
-                .build()).collect(Collectors.toList());
+        List<CaseInfo> billInfos = billLst.stream()
+                .map(n -> CaseInfo.builder()
+                        .batchNo(n.get(0))
+                        .cardNo(n.get(1))
+                        .name(n.get(2))
+                        .phone(n.get(3))
+                        .billCode(n.get(4))
+                        .build()).collect(Collectors.toList());
         billInfos = handleOverread(billInfos);
 
-        List<CallRec> callRecs = callRecList.stream().map(n -> CallRec.builder()
-                .batchNo(n.get(0))
-                .billCode(n.get(1))
-                .callId(n.get(2))
-                .callTime(GV.l(n.get(3)))
-                .callTimeStr(handleTimeStr(GV.l(n.get(3))))
-                .phone(n.get(4))
-                .url(n.get(5))
-                .build()).collect(Collectors.toList());
-
+        for (List<String> n : callRecList) {
+            List<PairDef<String, String>> pairDefs = batchNoMap.get(n.get(0));
+            if (CollectionUtils.isNotEmpty(pairDefs)) {
+                for (PairDef<String, String> def : pairDefs) {
+                    callRecs.add(CallRec.builder()
+                                    .batchNo(def.getSecond())
+                                    .billCode(n.get(1))
+                                    .callId(n.get(2))
+                                    .callTime(GV.l(n.get(3)))
+                                    .callTimeStr(handleTimeStr(GV.l(n.get(3))))
+                                    .phone(n.get(4))
+                                    .url(n.get(5))
+                                    .build());
+                }
+            } else {
+                callRecs.add(CallRec.builder()
+                                .batchNo(n.get(0))
+                                .billCode(n.get(1))
+                                .callId(n.get(2))
+                                .callTime(GV.l(n.get(3)))
+                                .callTimeStr(handleTimeStr(GV.l(n.get(3))))
+                                .phone(n.get(4))
+                                .url(n.get(5))
+                                .build());
+            }
+        }
 
         Map<String, List<CaseInfo>> billMap = billInfos.stream().collect(Collectors.groupingBy(CaseInfo::getBatchNo));
         Map<String, List<CallRec>> batchNoCallRecMap = callRecs.stream().collect(Collectors.groupingBy(CallRec::getBatchNo));
